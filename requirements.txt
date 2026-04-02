@@ -12,7 +12,7 @@ drf-spectacular==0.28.0
 # Uncomment below for PostgreSQL:
 # psycopg2-binary==2.9.10
 # Uncomment below for Celery/Redis background tasks:
-# celery==5.4.0
-# redis==5.2.1
+celery==5.4.0
+redis==5.2.1
 dj-database-url==2.1.0
 psycopg2-binary==2.9.9
