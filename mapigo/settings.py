@@ -71,18 +71,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mapigo.wsgi.application'
 
-# Database configuration - PostgreSQL for all environments
-# Using the Render PostgreSQL database
-DATABASE_URL = config('DATABASE_URL', default='postgresql://mapigo_user:xyQ1soNmdOd4ElTdRiJXc31gzg8qxbSh@dpg-d771e1h5pdvs7388bhkg-a.oregon-postgres.render.com/mapigo')
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=DATABASE_URL,
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True  # Required for Render PostgreSQL
-    )
-}
+
+import dj_database_url
+
+# Database configuration - Use environment variable only
+DATABASE_URL = config('DATABASE_URL', default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True  # Required for Render PostgreSQL
+        )
+    }
+else:
+    # Fallback for local development (optional)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
+    
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
